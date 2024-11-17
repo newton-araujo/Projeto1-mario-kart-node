@@ -107,6 +107,8 @@ async function playRaceEngine(character1, character2) {
 
             powerResult2 -= powerResult1 > powerResult2 && character2.PONTOS > 0 ? 1 : 0;
             powerResult1 -= powerResult2 > powerResult1 && character1.PONTOS > 0 ? 1 : 0; 
+
+            console.log(powerResult1 === powerResult2 ? "CONFRONTO EMPATADO! NENHUM PONTO FOI PERDIDO":"")
             
         }
 
