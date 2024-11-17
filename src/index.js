@@ -22,6 +22,8 @@ async function rollDice() {
     return Math.floor(Math.random() * 6) + 1;
 }
 
+
+//Criando Confronto
 async function getRadomBlock() {
     
     let random = Math.random()
@@ -46,6 +48,13 @@ async function getRadomBlock() {
 
 }
 
+async function logRollResult(characterName, block, diceResult, attribute) {
+    
+    console.log(`${characterName} 🎲 rolou um dado de ${block} ${diceResult} + ${attribute} = ${diceResult + attribute}`)
+
+}
+
+
 
 //Start Race
 async function playRaceEngine(character1, character2) {
@@ -56,17 +65,65 @@ async function playRaceEngine(character1, character2) {
 
         let block = await getRadomBlock()
         console.log(`BLOCO: ${block}`)
+
+
+                //Rolar os dados
+        let diceResult1 = await rollDice()
+        let diceResult2 = await rollDice()
+
+        //Teste de habilidades
+        let testSkill1 = 0
+        let testSkill2 = 0
+
+        if (block === "RETA"){
+
+            testSkill1 = diceResult1 + play1.VELOCIDADE
+            testSkill2 = diceResult2 + play2.VELOCIDADE
+
+            await logRollResult(play1.NOME,"VELOCIDADE",diceResult1,character1.VELOCIDADE)
+            await logRollResult(play2.NOME,"VELOCIDADE",diceResult2,character2.VELOCIDADE)
+        }
+
+        
+        if (block === "CURVA"){
+
+            testSkill1 = diceResult1 + play1.MANOBRALIDADE
+            testSkill2 = diceResult2 + play2.MANOBRALIDADE
+
+            await logRollResult(play1.NOME,"MANOBRALIDADE",diceResult1,character1.MANOBRALIDADE)
+            await logRollResult(play2.NOME,"MANOBRALIDADE",diceResult2,character2.MANOBRALIDADE)
+
+        }
+
+        if (block === "CONFRONTO"){
+            let powerResult1 = diceResult1 + play1.PODER
+            let powerResult2 = diceResult2 + play2.PODER
+
+            console.log(`${character1.NOME} confrontou com ${character2.NOME}`)
+
+            await logRollResult(play1.NOME,"PODER",diceResult1,character1.PODER)
+            await logRollResult(play2.NOME,"PODER",diceResult2,character2.PODER)
+
+
+            powerResult2 -= powerResult1 > powerResult2 && character2.PONTOS > 0 ? 1 : 0;
+            powerResult1 -= powerResult2 > powerResult1 && character1.PONTOS > 0 ? 1 : 0; 
+            
+        }
+
+        if (testSkill1 > testSkill2){
+            console.log(`${character1.NOME} marcou um ponto`)
+            character1.PONTOS++
+        }else if (testSkill2 > testSkill1){
+            console.log(`${character2.NOME} marcou um ponto`)
+            character2.PONTOS++
+        }
+
+
+        console.log('----------------------------------------------------')
+
     }
 
-    //Rolar os dados
-    let diceResult1 = await rollDice()
-    let diceResult2 = await rollDice()
 
-    //Teste de habilidades
-    let testSkill1 = 0
-    let testSkill2 = 0
-
-    
 }
 
 
